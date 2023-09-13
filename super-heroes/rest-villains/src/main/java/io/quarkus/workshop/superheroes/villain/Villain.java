@@ -7,6 +7,9 @@ import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
+import java.util.Random;
+
+
 @Entity
 public class Villain extends PanacheEntity {
 
@@ -38,5 +41,12 @@ public class Villain extends PanacheEntity {
                 ", picture='" + picture + '\'' +
                 ", powers='" + powers + '\'' +
                 '}';
+    }
+
+    public static Villain findRandom() {
+        long countVillains = count();
+        Random random = new Random();
+        int randomVillain = random.nextInt((int) countVillains);
+        return findAll().page(randomVillain, 1).firstResult();
     }
 }
