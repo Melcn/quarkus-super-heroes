@@ -1,9 +1,11 @@
 package io.quarkus.workshop.superheroes.villain;
 
 import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import java.util.List;
+import java.util.logging.Logger;
 
 import static jakarta.transaction.Transactional.TxType.REQUIRED;
 import static jakarta.transaction.Transactional.TxType.SUPPORTS;
@@ -11,6 +13,11 @@ import static jakarta.transaction.Transactional.TxType.SUPPORTS;
 @ApplicationScoped
 @Transactional(REQUIRED)
 public class VillainService {
+
+    @Inject
+    Logger logger;
+    @Inject
+    VillainService service;
 
     @Transactional(SUPPORTS)
     public List<Villain> findAllVillains() {

@@ -82,8 +82,9 @@ public class VillainResource {
     }
 
     @GET
+    @Path("/hello")
     @Produces(TEXT_PLAIN)
     public String hello() {
-        return "Hello Villain resource";
+        return "Hello Villain Resource";
     }
 }
