@@ -14,11 +14,6 @@ import static jakarta.transaction.Transactional.TxType.SUPPORTS;
 @Transactional(REQUIRED)
 public class VillainService {
 
-    @Inject
-    Logger logger;
-    @Inject
-    VillainService service;
-
     @Transactional(SUPPORTS)
     public List<Villain> findAllVillains() {
         return Villain.listAll();

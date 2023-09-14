@@ -1,6 +1,7 @@
 package io.quarkus.workshop.superheroes.villain;
 
 
+import jakarta.inject.Inject;
 import org.jboss.logging.Logger;
 import org.jboss.resteasy.reactive.RestPath;
 import org.jboss.resteasy.reactive.RestResponse;
@@ -22,8 +23,8 @@ import static jakarta.ws.rs.core.MediaType.TEXT_PLAIN;
 @Path("/api/villains")
 public class VillainResource {
 
-    Logger logger;
-    VillainService service;
+    @Inject Logger logger;
+    @Inject VillainService service;
 
     public VillainResource(Logger logger, VillainService service) {
         this.service = service;
