@@ -38,6 +38,22 @@ public class HeroResource {
         return Hero.listAll();
     }
 
+    @Operation(summary = "Returns a hero for a given identifier")
+    @GET
+    @Path("/{id}")
+    @APIResponse(responseCode = "200", content = @Content(mediaType = APPLICATION_JSON, schema = @Schema(implementation = Hero.class)))
+    @APIResponse(responseCode = "204", description = "The hero is not found for a given identifier")
+    public Uni<RestResponse<Hero>> getHero(@RestPath Long id) {
+        return Hero.<Hero>findById(id)
+                .map(hero -> {
+                    if (hero != null) {
+                        return RestResponse.ok(hero);
+                    }
+                    logger.debugf("No Hero found with id %d", id);
+                    return RestResponse.noContent();
+                });
+    }
+
 
     @GET
     @Produces(MediaType.TEXT_PLAIN)
