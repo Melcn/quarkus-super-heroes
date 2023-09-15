@@ -87,6 +87,19 @@ public class HeroResource {
                 });
 
     }
+
+    @Operation(summary = "Deletes an exiting hero")
+    @DELETE
+    @Path("/{id}")
+    @APIResponse(responseCode = "204")
+    @WithTransaction
+    public Uni<RestResponse<Void>> deleteHero(@RestPath Long id) {
+        return Hero.deleteById(id)
+                .invoke(() -> logger.debugf("Hero deleted with %d", id))
+                .replaceWith(RestResponse.noContent());
+    }
+
+
     @GET
     @Produces(MediaType.TEXT_PLAIN)
     public String hello() {
