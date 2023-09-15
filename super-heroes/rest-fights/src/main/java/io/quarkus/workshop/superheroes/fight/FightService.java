@@ -35,5 +35,26 @@ public class FightService {
         return null;
     }
 
+    @Transactional(REQUIRED)
+    public Fight persistFight(Fighters fighters) {
+        // Amazingly fancy logic to determine the winner...
+        Fight fight;
 
+        int heroAdjust = random.nextInt(20);
+        int villainAdjust = random.nextInt(20);
+
+        if ((fighters.hero.level + heroAdjust)
+                > (fighters.villain.level + villainAdjust)) {
+            fight = heroWon(fighters);
+        } else if (fighters.hero.level < fighters.villain.level) {
+            fight = villainWon(fighters);
+        } else {
+            fight = random.nextBoolean() ? heroWon(fighters) : villainWon(fighters);
+        }
+
+        fight.fightDate = Instant.now();
+        fight.persist();
+
+        return fight;
+    }
 }
