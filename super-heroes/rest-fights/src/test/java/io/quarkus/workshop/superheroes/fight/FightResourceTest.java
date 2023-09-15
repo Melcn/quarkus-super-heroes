@@ -41,12 +41,21 @@ public class FightResourceTest {
     private static String fightId;
 
     @Test
+    void shouldPingOpenAPI() {
+        given()
+                .header(ACCEPT, APPLICATION_JSON)
+                .when().get("/q/openapi")
+                .then()
+                .statusCode(OK.getStatusCode());
+    }
+
+    @Test
     public void testHelloEndpoint() {
         given()
-          .when().get("/api/fights")
-          .then()
-             .statusCode(200)
-             .body(is("Hello from RESTEasy Reactive"));
+                .when().get("/api/fights/hello")
+                .then()
+                .statusCode(200)
+                .body(is("Hello Fight Resource"));
     }
 
 }
