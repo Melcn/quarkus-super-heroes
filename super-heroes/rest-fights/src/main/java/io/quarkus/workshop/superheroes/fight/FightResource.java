@@ -51,9 +51,15 @@ public class FightResource {
         }
     }
 
+    @POST
+    public Fight fight(@Valid Fighters fighters, UriInfo uriInfo) {
+        return service.persistFight(fighters);
+    }
+
     @GET
     @Produces(MediaType.TEXT_PLAIN)
+    @Path("/hello")
     public String hello() {
-        return "Hello from RESTEasy Reactive";
+        return "Hello Fight Resource";
     }
 }
