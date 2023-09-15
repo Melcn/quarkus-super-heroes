@@ -67,6 +67,26 @@ public class HeroResource {
                 });
     }
 
+    @Operation(summary = "Updates an exiting hero")
+    @PUT
+    @APIResponse(responseCode = "200", description = "The updated hero", content = @Content(mediaType = APPLICATION_JSON, schema = @Schema(implementation = Hero.class)))
+    @WithTransaction
+    public Uni<Hero> updateHero(@Valid Hero hero) {
+        return Hero.<Hero>findById(hero.id)
+                .map(retrieved -> {
+                    retrieved.name = hero.name;
+                    retrieved.otherName = hero.otherName;
+                    retrieved.level = hero.level;
+                    retrieved.picture = hero.picture;
+                    retrieved.powers = hero.powers;
+                    return retrieved;
+                })
+                .map(h -> {
+                    logger.debugf("Hero updated with new valued %s", h);
+                    return h;
+                });
+
+    }
     @GET
     @Produces(MediaType.TEXT_PLAIN)
     public String hello() {
