@@ -12,7 +12,6 @@ import org.jboss.logging.Logger;
 import org.jboss.resteasy.reactive.RestPath;
 import org.jboss.resteasy.reactive.RestResponse;
 
-
 import jakarta.validation.Valid;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.*;
@@ -20,10 +19,7 @@ import java.net.URI;
 import java.util.List;
 
 import static jakarta.ws.rs.core.MediaType.APPLICATION_JSON;
-import jakarta.ws.rs.GET;
-import jakarta.ws.rs.Path;
-import jakarta.ws.rs.Produces;
-import jakarta.ws.rs.core.MediaType;
+
 
 @Path("/api/heroes")
 @Tag(name = "heroes")
@@ -118,7 +114,6 @@ public class HeroResource {
                 .invoke(() -> logger.debugf("Hero deleted with %d", id))
                 .replaceWith(RestResponse.noContent());
     }
-
 
     @GET
     @Produces(MediaType.TEXT_PLAIN)

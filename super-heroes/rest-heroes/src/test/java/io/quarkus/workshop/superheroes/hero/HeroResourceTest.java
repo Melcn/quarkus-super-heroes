@@ -7,7 +7,6 @@ import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
-
 import jakarta.ws.rs.core.HttpHeaders;
 import jakarta.ws.rs.core.MediaType;
 import java.util.List;
@@ -59,6 +58,7 @@ public class HeroResourceTest {
                 .statusCode(200)
                 .body(is("Hello Hero Resource"));
     }
+
     @Test
     void shouldNotGetUnknownHero() {
         Long randomId = new Random().nextLong();
@@ -106,6 +106,7 @@ public class HeroResourceTest {
                 .extract().body().as(getHeroTypeRef());
         assertEquals(NB_HEROES, heroes.size());
     }
+
     @Test
     @Order(2)
     void shouldAddAnItem() {
