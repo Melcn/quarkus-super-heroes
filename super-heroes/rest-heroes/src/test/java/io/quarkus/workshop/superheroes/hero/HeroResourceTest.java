@@ -27,6 +27,14 @@ public class HeroResourceTest {
     private static String heroId;
 
     @Test
+    void shouldPingOpenAPI() {
+        given()
+                .header(ACCEPT, APPLICATION_JSON)
+                .when().get("/q/openapi")
+                .then()
+                .statusCode(OK.getStatusCode());
+    }
+    @Test
     public void testHelloEndpoint() {
         given()
           .when().get("/api/heroes")
