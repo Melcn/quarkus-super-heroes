@@ -34,6 +34,15 @@ public class HeroResourceTest {
                 .then()
                 .statusCode(OK.getStatusCode());
     }
+
+    @Test
+    public void testHelloEndpoint() {
+        given()
+                .when().get("/api/heroes/hello")
+                .then()
+                .statusCode(200)
+                .body(is("Hello Hero Resource"));
+    }
     @Test
     public void testHelloEndpoint() {
         given()
