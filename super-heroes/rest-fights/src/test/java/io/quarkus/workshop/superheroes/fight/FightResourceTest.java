@@ -58,4 +58,38 @@ public class FightResourceTest {
                 .body(is("Hello Fight Resource"));
     }
 
+    @Test
+    void shouldNotGetUnknownFight() {
+        Long randomId = new Random().nextLong();
+        given()
+                .pathParam("id", randomId)
+                .when().get("/api/fights/{id}")
+                .then()
+                .statusCode(NO_CONTENT.getStatusCode());
+    }
+
+    @Test
+    void shouldNotAddInvalidItem() {
+        Fighters fighters = new Fighters();
+        fighters.hero = null;
+        fighters.villain = null;
+
+        given()
+                .body(fighters)
+                .header(CONTENT_TYPE, APPLICATION_JSON)
+                .header(ACCEPT, APPLICATION_JSON)
+                .when()
+                .post("/api/fights")
+                .then()
+                .statusCode(BAD_REQUEST.getStatusCode());
+    }
+
+    @Test
+    @Order(1)
+    void shouldGetInitialItems() {
+        List<Fight> fights = get("/api/fights").then()
+                .statusCode(OK.getStatusCode())
+                .extract().body().as(getFightTypeRef());
+        assertEquals(NB_FIGHTS, fights.size());
+    }
 }
