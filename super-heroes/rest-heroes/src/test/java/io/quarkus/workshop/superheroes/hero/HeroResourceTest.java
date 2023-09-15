@@ -90,4 +90,101 @@ public class HeroResourceTest {
                 .extract().body().as(getHeroTypeRef());
         assertEquals(NB_HEROES, heroes.size());
     }
+    @Test
+    @Order(2)
+    void shouldAddAnItem() {
+        Hero hero = new Hero();
+        hero.name = DEFAULT_NAME;
+        hero.otherName = DEFAULT_OTHER_NAME;
+        hero.picture = DEFAULT_PICTURE;
+        hero.powers = DEFAULT_POWERS;
+        hero.level = DEFAULT_LEVEL;
+
+        String location = given()
+                .body(hero)
+                .header(CONTENT_TYPE, APPLICATION_JSON)
+                .header(ACCEPT, APPLICATION_JSON)
+                .when()
+                .post("/api/heroes")
+                .then()
+                .statusCode(CREATED.getStatusCode())
+                .extract().header("Location");
+        assertTrue(location.contains("/api/heroes"));
+
+        // Stores the id
+        String[] segments = location.split("/");
+        heroId = segments[segments.length - 1];
+        assertNotNull(heroId);
+
+        given()
+                .pathParam("id", heroId)
+                .when().get("/api/heroes/{id}")
+                .then()
+                .statusCode(OK.getStatusCode())
+                .body("name", Is.is(DEFAULT_NAME))
+                .body("otherName", Is.is(DEFAULT_OTHER_NAME))
+                .body("level", Is.is(DEFAULT_LEVEL))
+                .body("picture", Is.is(DEFAULT_PICTURE))
+                .body("powers", Is.is(DEFAULT_POWERS));
+
+        List<Hero> heroes = get("/api/heroes").then()
+                .statusCode(OK.getStatusCode())
+                .extract().body().as(getHeroTypeRef());
+        assertEquals(NB_HEROES + 1, heroes.size());
+    }
+
+    @Test
+    @Order(3)
+    void shouldUpdateAnItem() {
+        Hero hero = new Hero();
+        hero.id = Long.valueOf(heroId);
+        hero.name = UPDATED_NAME;
+        hero.otherName = UPDATED_OTHER_NAME;
+        hero.picture = UPDATED_PICTURE;
+        hero.powers = UPDATED_POWERS;
+        hero.level = UPDATED_LEVEL;
+
+        given()
+                .body(hero)
+                .header(CONTENT_TYPE, APPLICATION_JSON)
+                .header(ACCEPT, APPLICATION_JSON)
+                .when()
+                .put("/api/heroes")
+                .then()
+                .statusCode(OK.getStatusCode())
+                .contentType(APPLICATION_JSON)
+                .body("name", Is.is(UPDATED_NAME))
+                .body("otherName", Is.is(UPDATED_OTHER_NAME))
+                .body("level", Is.is(UPDATED_LEVEL))
+                .body("picture", Is.is(UPDATED_PICTURE))
+                .body("powers", Is.is(UPDATED_POWERS));
+
+        List<Hero> heroes = get("/api/heroes").then()
+                .statusCode(OK.getStatusCode())
+                .contentType(APPLICATION_JSON)
+                .extract().body().as(getHeroTypeRef());
+        assertEquals(NB_HEROES + 1, heroes.size());
+    }
+
+    @Test
+    @Order(4)
+    void shouldRemoveAnItem() {
+        given()
+                .pathParam("id", heroId)
+                .when().delete("/api/heroes/{id}")
+                .then()
+                .statusCode(NO_CONTENT.getStatusCode());
+
+        List<Hero> heroes = get("/api/heroes").then()
+                .statusCode(OK.getStatusCode())
+                .contentType(APPLICATION_JSON)
+                .extract().body().as(getHeroTypeRef());
+        assertEquals(NB_HEROES, heroes.size());
+    }
+
+    private TypeRef<List<Hero>> getHeroTypeRef() {
+        return new TypeRef<List<Hero>>() {
+            // Kept empty on purpose
+        };
+    }
 }
