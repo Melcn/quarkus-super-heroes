@@ -57,4 +57,22 @@ public class FightService {
 
         return fight;
     }
+
+
+    private Fight heroWon(Fighters fighters) {
+        logger.info("Yes, Hero won :o)");
+        Fight fight = new Fight();
+        fight.winnerName = fighters.hero.name;
+        fight.winnerPicture = fighters.hero.picture;
+        fight.winnerLevel = fighters.hero.level;
+        fight.winnerPowers = fighters.hero.powers;
+        fight.loserName = fighters.villain.name;
+        fight.loserPicture = fighters.villain.picture;
+        fight.loserLevel = fighters.villain.level;
+        fight.loserPowers = fighters.villain.powers;
+        fight.winnerTeam = "heroes";
+        fight.loserTeam = "villains";
+        return fight;
+    }
+
 }
