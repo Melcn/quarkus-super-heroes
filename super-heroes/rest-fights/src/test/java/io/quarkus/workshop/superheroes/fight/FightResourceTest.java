@@ -92,4 +92,58 @@ public class FightResourceTest {
                 .extract().body().as(getFightTypeRef());
         assertEquals(NB_FIGHTS, fights.size());
     }
+
+    @Test
+    @Order(2)
+    void shouldAddAnItem() {
+        Hero hero = new Hero();
+        hero.name = DEFAULT_WINNER_NAME;
+        hero.picture = DEFAULT_WINNER_PICTURE;
+        hero.level = DEFAULT_WINNER_LEVEL;
+        Villain villain = new Villain();
+        villain.name = DEFAULT_LOSER_NAME;
+        villain.picture = DEFAULT_LOSER_PICTURE;
+        villain.level = DEFAULT_LOSER_LEVEL;
+        Fighters fighters = new Fighters();
+        fighters.hero = hero;
+        fighters.villain = villain;
+
+        fightId = given()
+                .body(fighters)
+                .header(CONTENT_TYPE, APPLICATION_JSON)
+                .header(ACCEPT, APPLICATION_JSON)
+                .when()
+                .post("/api/fights")
+                .then()
+                .statusCode(OK.getStatusCode())
+                .body(containsString("winner"), containsString("loser"))
+                .extract().body().jsonPath().getString("id");
+
+        assertNotNull(fightId);
+
+        given()
+                .pathParam("id", fightId)
+                .when().get("/api/fights/{id}")
+                .then()
+                .statusCode(OK.getStatusCode())
+                .contentType(APPLICATION_JSON)
+                .body("winnerName", Is.is(DEFAULT_WINNER_NAME))
+                .body("winnerPicture", Is.is(DEFAULT_WINNER_PICTURE))
+                .body("winnerLevel", Is.is(DEFAULT_WINNER_LEVEL))
+                .body("loserName", Is.is(DEFAULT_LOSER_NAME))
+                .body("loserPicture", Is.is(DEFAULT_LOSER_PICTURE))
+                .body("loserLevel", Is.is(DEFAULT_LOSER_LEVEL))
+                .body("fightDate", Is.is(notNullValue()));
+
+        List<Fight> fights = get("/api/fights").then()
+                .statusCode(OK.getStatusCode())
+                .extract().body().as(getFightTypeRef());
+        assertEquals(NB_FIGHTS + 1, fights.size());
+    }
+
+    private TypeRef<List<Fight>> getFightTypeRef() {
+        return new TypeRef<List<Fight>>() {
+            // Kept empty on purpose
+        };
+    }
 }
