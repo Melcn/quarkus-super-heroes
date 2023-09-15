@@ -102,7 +102,9 @@ public class HeroResource {
 
     @GET
     @Produces(MediaType.TEXT_PLAIN)
+    @Path("/hello")
+    @Tag(name = "hello")
     public String hello() {
-        return "Hello from RESTEasy Reactive";
+        return "Hello Hero Resource";
     }
 }
