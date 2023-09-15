@@ -54,6 +54,18 @@ public class HeroResource {
                 });
     }
 
+    @Operation(summary = "Creates a valid hero")
+    @POST
+    @APIResponse(responseCode = "201", description = "The URI of the created hero", content = @Content(mediaType = APPLICATION_JSON, schema = @Schema(implementation = URI.class)))
+    @WithTransaction
+    public Uni<RestResponse<URI>> createHero(@Valid Hero hero, @Context UriInfo uriInfo) {
+        return hero.<Hero>persist()
+                .map(h -> {
+                    UriBuilder builder = uriInfo.getAbsolutePathBuilder().path(Long.toString(h.id));
+                    logger.debug("New Hero created with URI " + builder.build().toString());
+                    return RestResponse.created(builder.build());
+                });
+    }
 
     @GET
     @Produces(MediaType.TEXT_PLAIN)
