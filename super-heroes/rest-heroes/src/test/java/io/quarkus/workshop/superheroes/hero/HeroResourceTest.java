@@ -44,12 +44,21 @@ public class HeroResourceTest {
                 .body(is("Hello Hero Resource"));
     }
     @Test
-    public void testHelloEndpoint() {
+    void shouldNotGetUnknownHero() {
+        Long randomId = new Random().nextLong();
         given()
-          .when().get("/api/heroes")
-          .then()
-             .statusCode(200)
-             .body(is("Hello from RESTEasy Reactive"));
+                .pathParam("id", randomId)
+                .when().get("/api/heroes/{id}")
+                .then()
+                .statusCode(NO_CONTENT.getStatusCode());
     }
 
+    @Test
+    void shouldGetRandomHero() {
+        given()
+                .when().get("/api/heroes/random")
+                .then()
+                .statusCode(OK.getStatusCode())
+                .contentType(APPLICATION_JSON);
+    }
 }
