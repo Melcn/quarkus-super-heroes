@@ -61,6 +61,16 @@ public class FightService {
         hero.level = 1;
         return hero;
     }
+
+    public Villain fallbackRandomVillain() {
+        logger.warn("Falling back on Villain");
+        Villain villain = new Villain();
+        villain.name = "Fallback villain";
+        villain.picture = "https://dummyimage.com/280x380/b22222/ffffff&text=Fallback+Villain";
+        villain.powers = "Fallback villain powers";
+        villain.level = 42;
+        return villain;
+    }
     @Transactional(REQUIRED)
     public Fight persistFight(Fighters fighters) {
         // Amazingly fancy logic to determine the winner...
