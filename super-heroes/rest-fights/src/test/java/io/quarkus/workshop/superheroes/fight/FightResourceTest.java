@@ -40,6 +40,14 @@ public class FightResourceTest {
     private static final int NB_FIGHTS = 3;
     private static String fightId;
 
+    @InjectMock
+    @RestClient
+    HeroProxy heroProxy;
+
+    @BeforeEach
+    public void setup() {
+        Mockito.when(heroProxy.findRandomHero()).thenReturn(DefaultTestHero.INSTANCE);
+    }
     @Test
     void shouldPingOpenAPI() {
         given()
