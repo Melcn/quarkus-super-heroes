@@ -23,6 +23,16 @@ public class FightResource {
     @Inject
     FightService service;
 
+    @ConfigProperty(name = "process.milliseconds", defaultValue = "0")
+    long tooManyMilliseconds;
+
+    private void veryLongProcess() {
+        try {
+            Thread.sleep(tooManyMilliseconds);
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+        }
+    }
     @GET
     @Path("/randomfighters")
     public Response getRandomFighters() {
