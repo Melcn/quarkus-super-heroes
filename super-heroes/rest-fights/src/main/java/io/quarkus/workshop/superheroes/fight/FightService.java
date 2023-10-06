@@ -31,8 +31,12 @@ public class FightService {
     }
 
     public Fighters findRandomFighters() {
-        // Will be implemented later
-        return null;
+        Hero hero = findRandomHero();
+        Villain villain = findRandomVillain();
+        Fighters fighters = new Fighters();
+        fighters.hero = hero;
+        fighters.villain = villain;
+        return fighters;
     }
 
     @Transactional(REQUIRED)
