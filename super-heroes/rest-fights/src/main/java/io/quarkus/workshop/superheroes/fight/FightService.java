@@ -39,6 +39,13 @@ public class FightService {
         return fighters;
     }
 
+    Villain findRandomVillain() {
+        return villainProxy.findRandomVillain();
+    }
+
+    Hero findRandomHero() {
+        return heroProxy.findRandomHero();
+    }
     @Transactional(REQUIRED)
     public Fight persistFight(Fighters fighters) {
         // Amazingly fancy logic to determine the winner...
