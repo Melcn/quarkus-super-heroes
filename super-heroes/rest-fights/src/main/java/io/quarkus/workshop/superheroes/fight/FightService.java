@@ -109,4 +109,9 @@ public class FightService {
     Hero findRandomHero() {
         return heroProxy.findRandomHero();
     }
+
+    @Fallback(fallbackMethod = "fallbackRandomVillain")
+    Villain findRandomVillain() {
+        return villainProxy.findRandomVillain();
+    }
 }
