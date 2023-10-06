@@ -8,6 +8,7 @@ import jakarta.transaction.Transactional;
 import org.eclipse.microprofile.rest.client.inject.RestClient;
 import io.quarkus.workshop.superheroes.fight.client.HeroProxy;
 import io.quarkus.workshop.superheroes.fight.client.VillainProxy;
+import org.eclipse.microprofile.faulttolerance.Fallback;
 
 import java.time.Instant;
 import java.util.List;
