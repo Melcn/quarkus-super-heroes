@@ -5,6 +5,7 @@ import org.jboss.logging.Logger;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
+import org.eclipse.microprofile.rest.client.inject.RestClient;
 
 import java.time.Instant;
 import java.util.List;
