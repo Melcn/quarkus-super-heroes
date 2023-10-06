@@ -5,6 +5,9 @@ import org.jboss.logging.Logger;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
+import org.eclipse.microprofile.rest.client.inject.RestClient;
+import io.quarkus.workshop.superheroes.fight.client.HeroProxy;
+import io.quarkus.workshop.superheroes.fight.client.VillainProxy;
 
 import java.time.Instant;
 import java.util.List;
@@ -31,10 +34,21 @@ public class FightService {
     }
 
     public Fighters findRandomFighters() {
-        // Will be implemented later
-        return null;
+        Hero hero = findRandomHero();
+        Villain villain = findRandomVillain();
+        Fighters fighters = new Fighters();
+        fighters.hero = hero;
+        fighters.villain = villain;
+        return fighters;
     }
 
+    Villain findRandomVillain() {
+        return villainProxy.findRandomVillain();
+    }
+
+    Hero findRandomHero() {
+        return heroProxy.findRandomHero();
+    }
     @Transactional(REQUIRED)
     public Fight persistFight(Fighters fighters) {
         // Amazingly fancy logic to determine the winner...
