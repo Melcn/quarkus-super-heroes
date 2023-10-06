@@ -42,12 +42,24 @@ public class FightService {
         return fighters;
     }
 
+    @Fallback(fallbackMethod = "fallbackRandomVillain")
     Villain findRandomVillain() {
         return villainProxy.findRandomVillain();
     }
 
+    @Fallback(fallbackMethod = "fallbackRandomHero")
     Hero findRandomHero() {
         return heroProxy.findRandomHero();
+    }
+
+    public Hero fallbackRandomHero() {
+        logger.warn("Falling back on Hero");
+        Hero hero = new Hero();
+        hero.name = "Fallback hero";
+        hero.picture = "https://dummyimage.com/280x380/1e8fff/ffffff&text=Fallback+Hero";
+        hero.powers = "Fallback hero powers";
+        hero.level = 1;
+        return hero;
     }
     @Transactional(REQUIRED)
     public Fight persistFight(Fighters fighters) {
@@ -105,13 +117,5 @@ public class FightService {
         return fight;
     }
 
-    @Fallback(fallbackMethod = "fallbackRandomHero")
-    Hero findRandomHero() {
-        return heroProxy.findRandomHero();
-    }
 
-    @Fallback(fallbackMethod = "fallbackRandomVillain")
-    Villain findRandomVillain() {
-        return villainProxy.findRandomVillain();
-    }
 }
